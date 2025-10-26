@@ -53,13 +53,19 @@ public class Main {
         List<Terminal> terminalStream = airport.getTerminals().stream()
                 .filter(tl -> tl.getName().equals(terminalName))
                 .toList();
-        List<Flight> flightStream = terminalStream.stream()
+//        List<Flight> flightStream = terminalStream.stream()
+//                .map(Terminal::getFlights).flatMap(Collection::stream)
+//                .filter(tp -> tp.getType() == Flight.Type.valueOf("ARRIVAL"))
+//                .sorted(Comparator.comparing(Flight::getDate))
+//              //  .min(Comparator.comparing(Flight::getDate))
+//                .toList()
+//                ;
+
+                Optional<Flight> flightOptional = terminalStream.stream()
                 .map(Terminal::getFlights).flatMap(Collection::stream)
                 .filter(tp -> tp.getType() == Flight.Type.valueOf("ARRIVAL"))
-////                .sorted(Comparator.comparing())
-                .toList()
-                ;
+                .min(Comparator.comparing(Flight::getDate));
 
-        return Optional.empty();
+        return flightOptional;
     }
 }
